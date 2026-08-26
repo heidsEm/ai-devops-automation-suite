@@ -1,52 +1,49 @@
-# Heidi AI Automation Projects 2026
+# AI & DevOps Automation Suite (2026)
 
-A collection of automation, scripting, and productivity experiments built in 2026, focused on DevOps workflows, API operations, and AI‑assisted engineering tasks.
+A curated collection of production-ready Python automations, API management tools, and DevOps utilities designed for enterprise API gateways (Apigee X, Apigee Edge, Azure APIM) and CI/CD workflows.
 
-## Overview
+> **Problem:** Managing complex API gateway migrations, certificate rotations, policy syncs, and architecture diagrams manually is error-prone and time-consuming.  
+> **Solution:** Modular Python automation tools that turn multi-step DevOps operations into single-command executions.
 
-This repository showcases a variety of automation projects that leverage AI technologies and modern DevOps practices to streamline engineering workflows and increase productivity.
+---
 
-## Language
+## Tooling Modules
 
-- **Python** (100%) - All projects are written in Python with a focus on maintainability, scalability, and ease of integration.
+### 1. Apigee Edge Backup & Restore (`apgedge-backup-plan`)
+Automated backup and restore scripts for Apigee Edge API proxies, target servers, KVMs, and environment artifacts.
+* **Stack:** Python, REST APIs
+
+### 2. Apigee X Automation (`apigeex-automation`)
+Utilities for Apigee X API Key expiration calculation, activity logging, and quota field updates (`useEffectiveCount`).
+* **Stack:** Python, Apigee Management API
+
+### 3. Azure APIM Tools (`azure-apim-automation`)
+Azure API Management classification scripts, ADO pipeline secret sync tools, and dynamic architecture diagram generators.
+* **Stack:** Python, Azure SDK, Diagrams-as-Code
+
+### 4. General Automation & Cert Utilities (`general-automations`)
+* **Certificate Converters:** Seamless conversion between `.cer`, `.pem`, and `.pfx` formats for TLS endpoint setup.
+* **XML & Policy Tools:** Extraction of IP access controls, KVM endpoints, and XML policy diff comparison.
+* **Traffic Analytics:** Scripts for fetching total cross-platform traffic metrics across Apigee & Azure APIM.
+
+### 5. GitHub Actions & Governance (`github-automation`)
+Automated workflow generators for change documentation, CODEOWNERS assignment, and branch protection enforcement.
+
+---
 
 ## Getting Started
 
 ### Prerequisites
+* Python 3.9+
+* `pip install -r requirements.txt`
 
-- Python 3.8 or higher
-- pip (Python package manager)
-- Virtual environment tool (venv or conda)
+```bash
+git clone https://github.com/heidsEm/heidi-ai-automation-projects-2026.git
+cd heidi-ai-automation-projects-2026
+```
 
-### Installation
+---
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/heidsEm/heidi-ai-automation-projects-2026.git
-   cd heidi-ai-automation-projects-2026
-   ```
+## License
 
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Projects
-
-Each project directory contains its own README with specific instructions and usage examples.
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Create a feature branch for your work
-2. Write clear commit messages
-3. Include tests for new functionality
-4. Update relevant documentation
-5. Submit a pull request with a detailed description
+This repository is maintained by [Heidi L. Embat](https://github.com/heidsEm). Licensed under the MIT License.
