@@ -1,0 +1,108 @@
+{
+  "name": "CRP TG Sat Preview",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "37978d01-d7f1-4a81-8ec5-e69b0e261257",
+      "name": "Run when clicked (test)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        -304
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 23 * * 5"
+            }
+          ]
+        }
+      },
+      "id": "144a08c6-1fdc-4811-9e49-b994431520c2",
+      "name": "Sat 9am Sydney",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        1696,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "38282703-8299-808f-b8c5-fe1f5343fcb7",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Status|select",
+              "condition": "equals",
+              "selectValue": "Pending Approval"
+            }
+          ]
+        }
+      },
+      "id": "99b6fb6b-e8a7-4f51-a630-225111e602c1",
+      "name": "Get Pending Approval",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1952,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "-1003814980815",
+        "text": "=\ud83d\udccb <b>Weekly Preview Digest \u2014 Saturday</b>\n\nIn queue: {{ $json.queueCount }}\nPublished yesterday: {{ $json.publishedYesterday }}\n\nReview each preview below and tap Approve or Reject.",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "b3fb0afe-dee2-45bc-8aec-63ba3a98d6cc",
+      "name": "Send Header to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2736,
+        -304
+      ]
+    }
+  ],
+  "connections": {
+    "Run when clicked (test)": {
+      "main": [
+        [
+          {
+            "node": "Get Pending Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sat 9am Sydney": {
+      "main": [
+        [
+          {
+            "node": "Get Pending Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false
+}
