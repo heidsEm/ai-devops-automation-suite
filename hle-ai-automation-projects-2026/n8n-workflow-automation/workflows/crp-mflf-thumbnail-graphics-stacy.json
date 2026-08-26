@@ -1,0 +1,201 @@
+{
+  "name": "MF+LF + Thumbnail and Graphics (STACY)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "663a6181-9272-4424-98f8-ad579b57f910",
+      "name": "When clicking Execute workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -8032,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "38282703-8299-808f-b8c5-fe1f5343fcb7",
+          "mode": "list"
+        },
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Status|select",
+              "condition": "equals",
+              "selectValue": "Scripted"
+            }
+          ]
+        }
+      },
+      "id": "efb46941-3a0f-4495-88c2-8e099717a5c5",
+      "name": "Get many database pages",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -7824,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Peak Sentiment Extractor\nconst spokenScript = $json.spokenScript || '';\nconst statements = spokenScript.match(/[^.!?]+[.!?]+/g) || [spokenScript];\nreturn [{ json: { ...$input.first().json, peakStatement: statements[0] || 'Unpaid Invoice' } }];"
+      },
+      "id": "de7f0c47-601e-4d29-801f-110e6f5a17c1",
+      "name": "Peak Sentiment Extractor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4720,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "YOUR_ANTHROPIC_API_KEY"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 300, system: 'CRP Thumbnail Question Director' }) }}"
+      },
+      "id": "4be68d99-3d33-47dd-b0bc-e81fbbf749fe",
+      "name": "Claude: Thumbnail Prompt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -4336,
+        688
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "multiStep",
+        "operations": {
+          "operations": [
+            {
+              "operation": "text",
+              "text": "={{ $json.head1 }}",
+              "fontSize": "={{ $json.headlineFontSize }}",
+              "fontColor": "#FFFFFF",
+              "font": "/usr/share/fonts/truetype/msttcorefonts/Impact.ttf"
+            }
+          ]
+        },
+        "options": {
+          "destinationKey": "data",
+          "format": "png",
+          "quality": 100
+        }
+      },
+      "id": "6702196a-419b-4168-af7d-aa7f71658925",
+      "name": "Composite Thumbnail",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        -3216,
+        976
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.opus.pro/api/clip-projects",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_OPUSCLIP_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ videoUrl: $json.videoUrl, brandTemplateId: 'preset-fancy-Simple' }) }}"
+      },
+      "id": "c05e5452-7684-4904-a57b-ac7e0a33b675",
+      "name": "Submit to OpusClip",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        80
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking Execute workflow": {
+      "main": [
+        [
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages": {
+      "main": [
+        [
+          {
+            "node": "Peak Sentiment Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Peak Sentiment Extractor": {
+      "main": [
+        [
+          {
+            "node": "Claude: Thumbnail Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude: Thumbnail Prompt": {
+      "main": [
+        [
+          {
+            "node": "Composite Thumbnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Composite Thumbnail": {
+      "main": [
+        [
+          {
+            "node": "Submit to OpusClip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false
+}
