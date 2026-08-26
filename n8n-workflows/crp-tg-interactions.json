@@ -1,0 +1,150 @@
+{
+  "name": "CRP TG Interactions",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "callback_query",
+          "message"
+        ]
+      },
+      "id": "b424534f-4d61-4fce-87fc-b8532337e756",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        14896,
+        6336
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalizes Telegram callback_query and force-reply message shapes.\nconst item = $input.first().json;\nlet kind = 'ignore', action = 'ignore', assetId = '', reason = '';\nlet userId = '', userName = 'user', messageId = '', chatId = '', callbackQueryId = '', originalText = '';\n\nif (item.callback_query) {\n  const cq = item.callback_query;\n  kind = 'callback';\n  callbackQueryId = cq.id;\n  userId = String(cq.from?.id || '');\n  userName = cq.from?.username || cq.from?.first_name || 'user';\n  messageId = String(cq.message?.message_id || '');\n  chatId = cq.message?.chat?.id || '';\n  originalText = cq.message?.text || cq.message?.caption || '';\n  const parts = String(cq.data || '').split(':');\n  action = parts[0] || '';\n  assetId = parts[1] || '';\n} else if (item.message && item.message.reply_to_message) {\n  const msg = item.message;\n  kind = 'message';\n  userId = String(msg.from?.id || '');\n  userName = msg.from?.username || msg.from?.first_name || 'user';\n  messageId = String(msg.reply_to_message.message_id || '');\n  chatId = msg.chat?.id || '';\n  reason = msg.text || '';\n  action = 'reject_reason';\n}\n\nreturn [{ json: { kind, action, assetId, reason, userId, userName, messageId, chatId, callbackQueryId, originalText } }];"
+      },
+      "id": "c96618aa-f6b7-4708-aaf8-e05a85d00cde",
+      "name": "Extract Interaction Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        15120,
+        6336
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "approve"
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "reject"
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "reject_reason"
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "eod_send"
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "eod_rework"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "id": "25a16d19-be6b-4094-8620-17c97b15fd8e",
+      "name": "Route by Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        15344,
+        6272
+      ]
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract Interaction Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Interaction Data": {
+      "main": [
+        [
+          {
+            "node": "Route by Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true
+}
