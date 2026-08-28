@@ -1,0 +1,264 @@
+{
+  "name": "CRP TG Weekly Macro Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 23 * * 6"
+            }
+          ]
+        }
+      },
+      "id": "dc6efb29-30e8-4293-b72d-d60889f1405f",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        32,
+        -160
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "9d506cbd-9ea4-4e18-9cfe-edb6477b0415",
+      "name": "When clicking \u2018Execute workflow\u2019",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e54c3c99-8182-4fac-91d4-b7456585e220",
+              "name": "nowIso",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "2657b3fa-1eca-4482-a7d5-f868acfeb4cd",
+              "name": "sevenDaysAgoIso",
+              "value": "={{ $now.minus({days: 7}).toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "34362785-2c97-4aa6-8bda-b4cbb6a449eb",
+              "name": "sevenDaysFromNowIso",
+              "value": "={{ $now.plus({days: 7}).toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "7c6662e4-eebd-4d4d-b865-6ee63cecb776",
+              "name": "runId",
+              "value": "={{ 'W2-' + $now.toFormat('yyyyLLdd-HHmmss') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c821ac2a-acc8-4995-88a1-9a3a3ca39906",
+      "name": "Date Boundaries",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "38282703-8299-808f-b8c5-fe1f5343fcb7",
+          "mode": "list",
+          "cachedResultName": "CRP CONTENT LIBRARY"
+        },
+        "returnAll": true
+      },
+      "id": "475cdd21-3a11-4a3a-886d-b6e63014eb13",
+      "name": "Get Content Library",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "39782703-8299-8060-a3c8-e30a033acd63",
+          "mode": "list",
+          "cachedResultName": "CRP WEEKLY BLOCKERS"
+        },
+        "returnAll": true,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Severity|select",
+              "condition": "equals",
+              "selectValue": "Critical"
+            },
+            {
+              "key": "Status|select",
+              "condition": "equals",
+              "selectValue": "Open"
+            }
+          ]
+        }
+      },
+      "id": "27af938d-d0ab-4624-b24d-fcb225ecdb3e",
+      "name": "Get Critical Blockers",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// W2 Sunday Macro Report \u2014 Aggregate all data into 10 WhatsApp template variables\nconst contentRows = $('Get Content Library').all().map(item => item.json);\nconst blockerRows = $('Get Critical Blockers').all().map(item => item.json);\nconst dates = $('Date Boundaries').first().json;\n\nconst countWhere = (arr, pred) => arr.filter(pred).length;\nconst formatStats = (formatCode) => {\n  const rows = contentRows.filter(r => r.property_format === formatCode);\n  const produced = countWhere(rows, r => r.property_date_produced && r.property_date_produced.start);\n  const approved = countWhere(rows, r => r.property_status === 'Approved');\n  const pending = countWhere(rows, r => r.property_status === 'Pending Approval');\n  return `${produced} produced, ${approved} approved, ${pending} pending`;\n};\n\nconst sfLine = formatStats('sc');\nconst mfLine = formatStats('mv');\nconst lfLine = formatStats('lf');\nconst approvedCount = countWhere(contentRows, r => r.property_status === 'Approved');\nconst rejectedCount = countWhere(contentRows, r => r.property_status === 'Rejected');\nconst pendingTapCount = countWhere(contentRows, r => r.property_status === 'Pending Approval');\nconst scriptedRows = contentRows.filter(r => r.property_status === 'Scripted');\nconst topicsReadyCount = scriptedRows.length;\nconst seriesSet = new Set(scriptedRows.map(r => r.property_series).filter(Boolean));\nconst seriesCoverage = seriesSet.size > 0 ? Array.from(seriesSet).sort().join(', ') : 'none';\nconst criticalBlockerCount = blockerRows.length;\nconst isOnTrack = (criticalBlockerCount === 0) && (approvedCount >= 3);\n\nlet statusLine = isOnTrack ? 'On track. No critical blockers.' : `Not on track. ${criticalBlockerCount} critical blockers open.`;\nlet blockersBlock = blockerRows.length === 0 ? 'None this week.' : blockerRows.map(b => `${b.property_title} (${b.property_owner})`).join(' | ');\n\nreturn [{\n  json: {\n    runId: dates.runId,\n    firedAt: dates.nowIso,\n    templateVars: {\n      var1_status: statusLine,\n      var2_sf: sfLine,\n      var3_mf: mfLine,\n      var4_lf: lfLine,\n      var5_approved: String(approvedCount),\n      var6_rejected: String(rejectedCount),\n      var7_pending: String(pendingTapCount),\n      var8_topicsReady: String(topicsReadyCount),\n      var9_seriesCoverage: seriesCoverage,\n      var10_blockers: blockersBlock\n    }\n  }\n}];"
+      },
+      "id": "3224793b-4a32-4125-820a-419277632f97",
+      "name": "Aggregate & Build Template Vars",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll"
+      },
+      "id": "34a02216-2791-4db9-934d-12467391607a",
+      "name": "Wait for Both",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        912,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "-1003899254818",
+        "text": "=\ud83d\udcca <b>Weekly Macro Report</b>\n\n\ud83c\udfaf <b>Status</b>: {{ $json.templateVars.var1_status }}\n\ud83d\udcfa <b>SF</b>: {{ $json.templateVars.var2_sf }}\n\ud83c\udfac <b>MF</b>: {{ $json.templateVars.var3_mf }}\n\ud83c\udf9e\ufe0f <b>LF</b>: {{ $json.templateVars.var4_lf }}\n\u2705 <b>Approved</b>: {{ $json.templateVars.var5_approved }}\n\u274c <b>Rejected</b>: {{ $json.templateVars.var6_rejected }}\n\u23f3 <b>Pending</b>: {{ $json.templateVars.var7_pending }}\n\ud83d\udcda <b>Topics Ready</b>: {{ $json.templateVars.var8_topicsReady }}\n\ud83d\udcc2 <b>Series Coverage</b>: {{ $json.templateVars.var9_seriesCoverage }}\n\ud83d\udea8 <b>Blockers</b>: {{ $json.templateVars.var10_blockers }}\n\n<i>CRP Pipeline \u00b7 Weekly Sunday 9am AEST</i>",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "c1494875-777d-4128-8f9c-7e2fb4366ed3",
+      "name": "Send Macro Report to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1312,
+        -240
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking \u2018Execute workflow\u2019": {
+      "main": [
+        [
+          {
+            "node": "Date Boundaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date Boundaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date Boundaries": {
+      "main": [
+        [
+          {
+            "node": "Get Content Library",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Critical Blockers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Content Library": {
+      "main": [
+        [
+          {
+            "node": "Wait for Both",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Critical Blockers": {
+      "main": [
+        [
+          {
+            "node": "Wait for Both",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Wait for Both": {
+      "main": [
+        [
+          {
+            "node": "Aggregate & Build Template Vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate & Build Template Vars": {
+      "main": [
+        [
+          {
+            "node": "Send Macro Report to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true
+}

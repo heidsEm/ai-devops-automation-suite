@@ -1,83 +1,73 @@
-# AI & DevOps Automation Suite (2026)
+# AI & DevOps Automation Suite
 
-A curated collection of production-grade Python automations, n8n workflow pipelines, API management utilities, and DevOps scripts designed for enterprise API gateways (Apigee X, Apigee Edge, Azure APIM), AI media generation, and CI/CD operations.
-
-> **Problem:** Managing complex API gateway migrations, certificate rotations, AI video pipelines, and operational reporting manually is error-prone and time-consuming.  
-> **Solution:** Modular Python scripts and n8n workflow automations that turn multi-step DevOps and AI operations into single-command executions.
+An enterprise-grade portfolio of **AI Orchestration Pipelines**, **Media Automation Engines**, **Cloud API Gateways (Apigee & Azure APIM)**, and **DevOps Infrastructure Utilities**.
 
 ---
 
-## 📁 Repository Architecture
+## 👤 Engineering Overview
+
+I build and support production systems — making complex API, cloud, and AI automation workflows easier to operate. 
+
+This repository consolidates **12 production-ready projects** demonstrating end-to-end capabilities across AI workflow engineering, web app development, API gateway management, PKI security, and CI/CD repository governance.
+
+---
+
+## 🚀 Projects Overview
+
+| # | Project Directory | Domain | Primary Tech Stack | Description |
+|---|---|---|---|---|
+| **01** | [`projects/n8n-ai-automation-pipelines`](projects/n8n-ai-automation-pipelines) | AI Automation | n8n, Claude API, ElevenLabs, Telegram | Multi-agent content generation & automated reporting pipelines |
+| **02** | [`projects/elevenlabs-batch-audio-engine`](projects/elevenlabs-batch-audio-engine) | Media / Audio | JavaScript, ElevenLabs API, FFmpeg WASM | Client-side batch TTS generator with FFmpeg speed variants |
+| **03** | [`projects/heygen-video-batch-submitter`](projects/heygen-video-batch-submitter) | Media / Video | JavaScript, HeyGen API v2/v3, CSV Export | Avatar video batch generator with automated template variable mapping |
+| **04** | [`projects/video-overlay-studio`](projects/video-overlay-studio) | Media / Canvas | HTML5 Canvas, Web Audio, MediaRecorder | Web compositing studio for burning text & B-roll overlays onto video |
+| **05** | [`projects/social-media-automation-hub`](projects/social-media-automation-hub) | Governance | HTML5/CSS3, SPA Architecture, n8n Docs | 15-platform setup guide & comprehensive n8n API reference dashboard |
+| **06** | [`projects/eod-update-summary-tool`](projects/eod-update-summary-tool) | Productivity | JavaScript, HTML5 Drag-and-Drop, html2canvas | Interactive daily engineering status card with PNG export |
+| **07** | [`projects/ai-meeting-transcription-suite`](projects/ai-meeting-transcription-suite) | AI Speech | Python, Whisper API, Claude API, YouTube API | Meeting audio/video transcription & action-item summary engine |
+| **08** | [`projects/dropbox-cloud-storage-automation`](projects/dropbox-cloud-storage-automation) | Cloud Storage | Python, Dropbox SDK, openpyxl | Automated Dropbox directory hierarchy creator & Excel sheet splitter |
+| **09** | [`projects/apigee-gateway-management`](projects/apigee-gateway-management) | API Management | Python, Apigee Edge/X Admin APIs, XML/JSON | Apigee gateway proxy backup, restore & quota policy automation |
+| **10** | [`projects/azure-apim-ops-suite`](projects/azure-apim-ops-suite) | API Management | Python, Azure APIM REST, Azure DevOps, Graphviz | Azure APIM classification, ADO secret sync & Diagrams-as-Code |
+| **11** | [`projects/devops-utilities-toolkit`](projects/devops-utilities-toolkit) | Security & PKI | Python, OpenSSL, ElementTree XML, Matplotlib | X.509 cert converters (`.cer`/`.pem`/`.pfx`), policy XML tools & traffic analytics |
+| **12** | [`projects/github-automation-suite`](projects/github-automation-suite) | CI/CD Governance | Python, GitHub REST API, GitHub Actions | Repository branch protection, CODEOWNERS, & reusable CI/CD workflows |
+
+---
+
+## 🏗️ System Architecture
 
 ```
-heidi-ai-automation-projects-2026/
-├── n8n-workflows/                  # AI Media Generation & Interactive Telegram/Notion Workflows
-├── apigee/                         # Apigee Edge Backup & Apigee X Operations Tooling
-│   ├── edge-backup/
-│   └── apigeex/
-├── azure-apim/                     # Azure API Management ADO Sync, Classification & Diagrams
-│   ├── ado-migration/
-│   ├── api-identifier/
-│   └── diagram-generator/
-├── devops-utilities/               # Cert Converters, Policy Parsers & Cross-Platform Analytics
-│   ├── cert-converter/
-│   ├── formatting-tools/
-│   ├── policy-tools/
-│   └── traffic-analytics/
-└── github-automation/              # Branch Protection & CI/CD Governance Scripts
-    ├── branch-protection/
-    └── workflows/
-```
-
----
-
-## ⚙️ Module Breakdown
-
-### 1. n8n AI & Workflow Automation (`/n8n-workflows/`)
-* **AI Video & Media Production:** End-to-end automated pipelines combining Claude (Anthropic), ElevenLabs TTS, Whisper audio QC, HeyGen video lipsyncing, and OpusClip clipping.
-* **Interactive Bot & Approvals:** Telegram webhook routers for interactive approval/rejection workflows syncing directly with Notion databases.
-* **Reporting Pipelines:** Macro reports and daily briefing digests for team velocity and blocker tracking.
-
-### 2. Apigee API Gateway Management (`/apigee/`)
-* **Edge Backup & Restore:** Automated scripts for proxies, target servers, KVMs, and environment artifacts.
-* **Apigee X Automation:** Quota field updates (`useEffectiveCount`), key date calculations, and CSA activity reporting.
-
-### 3. Azure API Management (`/azure-apim/`)
-* **ADO Migration & Secret Sync:** Automated Azure DevOps pipeline key management.
-* **Diagrams-as-Code:** Python script generating living APIM architecture diagrams (WAF, Gateway, Auth, Backend).
-
-### 4. DevOps Utilities & Cert Tools (`/devops-utilities/`)
-* **Certificate Converters:** Conversion between `.cer`, `.pem`, and `.pfx` formats.
-* **Policy Parsers:** XML policy diff comparison, IP whitelist extraction, and KVM endpoint enumeration.
-* **Traffic Analytics:** Cross-platform analytics scripts for Apigee & Azure APIM.
-
-### 5. GitHub Governance (`/github-automation/`)
-* Branch protection PR enforcers, CODEOWNERS assigners, and automated change documentation workflows.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-* Python 3.9+
-* n8n v1.0+ (for importing workflow JSON files)
-* Install Python dependencies:
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-### Quick Clone
-```bash
-git clone https://github.com/heidsEm/heidi-ai-automation-projects-2026.git
-cd heidi-ai-automation-projects-2026
+                    ┌────────────────────────────────────────┐
+                    │      n8n Orchestration Engine          │
+                    └──────────────────┬─────────────────────┘
+                                       │
+           ┌───────────────────────────┼───────────────────────────┐
+           ▼                           ▼                           ▼
+┌─────────────────────┐     ┌─────────────────────┐     ┌─────────────────────┐
+│  AI Video Pipelines │     │   Media Generation  │     │  Cloud & API Ops    │
+│  - Claude Scripting │     │  - ElevenLabs TTS   │     │  - Apigee Edge/X    │
+│  - HeyGen Avatars   │     │  - Video Overlay    │     │  - Azure APIM       │
+│  - Content Prompts  │     │  - EOD Summary      │     │  - GitHub Workflows │
+└─────────────────────┘     └─────────────────────┘     └─────────────────────┘
 ```
 
 ---
 
-## 🔒 Security & Compliance
-All API keys, tokens, webhooks, and private credentials across all JSON workflows and Python scripts have been sanitized with standard placeholders and environment variables.
+## 💻 Tech Stack Matrix
+
+* **AI & Language Models:** Anthropic Claude API, OpenAI Whisper API, HeyGen Avatar API, ElevenLabs TTS API
+* **API Management:** Apigee Edge, Apigee X, Azure API Management (APIM), OpenAPI / Swagger
+* **Orchestration & Workflow:** n8n, GitHub Actions, Async / Event-Driven Pipelines
+* **Cloud & DevOps:** Azure DevOps, Dropbox Cloud API, OpenSSL PKI, Terraform, Python 3.10+
+* **Frontend & Media:** HTML5 Canvas API, Web Audio API (OfflineAudioContext), FFmpeg WebAssembly, MediaRecorder
 
 ---
 
-## 📜 License
-Maintained by [Heidi L. Embat](https://github.com/heidsEm). Licensed under the [MIT License](LICENSE).
+## 🔒 Security & Privacy Disclosure
+
+All code, configurations, workflows, and documentation in this repository have undergone 100% security sanitization. All real API keys, bearer tokens, passwords, company names, personal names, phone numbers, and environment URLs have been replaced with standardized safe placeholders (`YOUR_API_KEY`, `YOUR_ACCESS_TOKEN`, `user@example.com`).
+
+For details, refer to the [Security & Sanitization Policy](docs/guides/security_sanitization_policy.md).
+
+---
+
+## 📄 License
+
+This repository is licensed under the [MIT License](LICENSE).
