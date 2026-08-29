@@ -10,17 +10,16 @@ Formatting daily engineering progress reports for team channels is tedious and v
 Provides a clean card UI for tracking Completed, Active, and Pending tasks with interactive drag-and-drop reordering and html2canvas PNG export.
 
 ## Tech Stack
-- HTML5 / CSS3 (DM Sans & DM Serif Display)
-- JavaScript (HTML5 Drag and Drop API)
-- html2canvas PNG Rendering Library
+- HTML5 / CSS3
+- JavaScript Drag & Drop API
+- html2canvas PNG Library
 
 ## Architecture / Workflow
 Edit Inline Content -> Drag to Reorder Tasks -> Upload Reference Attachments -> Click Save as Image -> High-Res PNG Download.
 
 ## Key Features
-- Inline contenteditable task and metadata fields
-- Drag-and-drop task reordering across Completed, Active, and Pending panels
-- Drag-and-drop image attachments with client-side preview
+- Inline contenteditable task fields
+- Drag-and-drop task reordering
 - One-click high-resolution PNG snapshot generation
 
 ## Project Structure
@@ -32,20 +31,15 @@ projects/eod-update-summary-tool/
 ```
 
 ## Setup
-1. Open `src/eod_update_summary.html` in a web browser.
-2. Click any text to edit, check off tasks, and click 'Save as Image'.
+1. Open `src/eod_update_summary.html` in browser.
 
 ## Example
 ```html
-<div id="card">
-  <h1>EOD Summary</h1>
-</div>
+<div id="card"><h1>EOD Summary</h1></div>
 ```
 
 ## Security & Privacy
-100% local client-side execution with zero external data transmission.
+100% client-side execution.
 
 ## Skills Demonstrated
-- HTML5 Drag-and-Drop Implementation
-- DOM-to-Canvas Image Rendering
-- Clean Productivity UI/UX Design
+- HTML5 Drag-and-Drop & DOM Snapshotting

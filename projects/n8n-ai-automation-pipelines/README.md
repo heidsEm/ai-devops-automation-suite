@@ -30,33 +30,21 @@ Webhook / Schedule Trigger -> Prompt Generation Node -> Claude API Execution -> 
 projects/n8n-ai-automation-pipelines/
 ├── README.md
 ├── config/
-│   ├── crp-tg-daily-digest.json
-│   ├── crp-tg-interactions.json
-│   ├── crp-tg-sat-preview.json
-│   ├── crp-tg-sf-workflow-stacy.json
-│   └── crp-tg-weekly-macro-report.json
 └── scripts/
-    └── video_content_prompt_creator.py
 ```
 
 ## Setup
 1. Import any `.json` file from `config/` into your n8n instance.
-2. Configure environment credentials in n8n (`ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN`).
-3. Execute workflow triggers or schedule intervals.
+2. Configure credentials.
 
 ## Example
 ```json
-{
-  "name": "AI Content Pipeline",
-  "nodes": [ ... ],
-  "active": false
-}
+{"name": "AI Pipeline"}
 ```
 
 ## Security & Privacy
-All API tokens, webhook URLs, bot credentials, and personal details have been redacted to placeholders (`YOUR_API_KEY`, `YOUR_WEBHOOK_URL`).
+All API tokens and credentials redacted.
 
 ## Skills Demonstrated
 - Enterprise n8n Workflow Design
-- AI API Integration (Claude & ElevenLabs)
-- Async Event Routing & Automated Reporting
+- AI API Integration

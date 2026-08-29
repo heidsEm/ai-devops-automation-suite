@@ -12,8 +12,8 @@ Provides a single-page batch web tool that connects to ElevenLabs API for multi-
 ## Tech Stack
 - HTML5 / JavaScript (ES6+)
 - ElevenLabs REST API
-- FFmpeg WebAssembly (@ffmpeg/ffmpeg)
-- CSS3 IBM Plex Mono UI
+- FFmpeg WebAssembly
+- CSS3 UI
 
 ## Architecture / Workflow
 User Inputs API Key & Voice IDs -> Text Script Batched -> ElevenLabs API Calls -> In-Browser FFmpeg Post-Processing -> Downloadable MP3 Variants.
@@ -33,19 +33,17 @@ projects/elevenlabs-batch-audio-engine/
 ```
 
 ## Setup
-1. Open `src/elevenlabs_audio_generator.html` in any web browser.
-2. Paste your ElevenLabs API Key (`YOUR_API_KEY`).
-3. Add target Voice IDs and script text, then click Generate Audio.
+1. Open `src/elevenlabs_audio_generator.html` in browser.
+2. Enter API key and script.
 
 ## Example
 ```html
-<input type="password" id="apiKey" placeholder="sk-...">
+<input type="password" id="apiKey">
 ```
 
 ## Security & Privacy
-API keys are stored strictly in browser memory (`sessionState`) and are never transmitted to third-party tracking servers.
+API keys stored only in browser memory.
 
 ## Skills Demonstrated
-- REST API Integration & Rate Limit Cooldown Handling
-- Client-Side WebAssembly Audio Processing (FFmpeg)
-- Dynamic DOM State Management
+- REST API Integration
+- WebAssembly Audio Processing

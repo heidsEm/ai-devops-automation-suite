@@ -48,4 +48,3 @@ Executed entirely in browser memory. Zero external server dependencies or API ca
 ## Skills Demonstrated
 - Text Parsing & Regular Expression AST Construction
 - Interactive UI State Synchronization
-- Client-Side CSV & SRT File Export Generation

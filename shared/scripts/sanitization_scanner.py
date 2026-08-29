@@ -8,7 +8,7 @@ import re
 import sys
 
 SECRET_PATTERNS = [
-    (r'sk-[a-zA-Z0-9_\-]{20,}', 'OpenAI / API Key'),
+    (r'sk-[a-zA-Z0-9_\-]{20,}', 'OpenAI API Key'),
     (r'ghp_[a-zA-Z0-9]{30,}', 'GitHub PAT Token'),
     (r'sl\.[a-zA-Z0-9_\-]{30,}', 'Dropbox Token'),
     (r'[a-zA-Z0-9._%+-]+@cpartners\.com\.au', 'Internal Email PII'),

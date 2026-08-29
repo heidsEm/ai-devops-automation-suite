@@ -33,9 +33,8 @@ projects/heygen-video-batch-submitter/
 ```
 
 ## Setup
-1. Open `src/heygen_batch_submitter.html` in a web browser.
-2. Input your HeyGen API Key and Template ID.
-3. Click 'Load Template Variables', select audio files, and click 'Submit All'.
+1. Open `src/heygen_batch_submitter.html` in browser.
+2. Input API Key and Template ID.
 
 ## Example
 ```javascript
@@ -43,9 +42,7 @@ const API_BASE = "https://api.heygen.com";
 ```
 
 ## Security & Privacy
-All API keys are entered via secure client-side password inputs and redacted in version control.
+API keys redacted.
 
 ## Skills Demonstrated
-- Batch REST API Automation & Polling Workflows
-- File Handling & Binary Data Uploading
-- Defensive Error Handling & CSV Generation
+- Batch REST API Automation

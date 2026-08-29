@@ -10,9 +10,9 @@ Managing brand consistency, privacy settings, OAuth credentials, and API connect
 Provides a unified web dashboard consolidating platform checklists, bio copy generators, brand guidelines, and n8n API setup documentation.
 
 ## Tech Stack
-- HTML5 / CSS3 (Inter & JetBrains Mono typography)
-- JavaScript (DOM State & Progress Calculation)
-- n8n API Architecture Documentation
+- HTML5 / CSS3
+- JavaScript (DOM State)
+- n8n API Architecture Docs
 
 ## Architecture / Workflow
 Select View -> Interactive Checklist State Update -> Progress Bar Sync -> Copy Bio Templates -> Inspect n8n API Connection Rules.
@@ -20,7 +20,7 @@ Select View -> Interactive Checklist State Update -> Progress Bar Sync -> Copy B
 ## Key Features
 - 15-Platform interactive setup checklists with local storage state persistence
 - Brand voice guidelines, fee structures, and copy-to-clipboard bio templates
-- Comprehensive n8n API & Token Reference Guide (OAuth 2.0, Bearer Token, API Key)
+- Comprehensive n8n API & Token Reference Guide
 - Responsive multi-tab app shell layout
 
 ## Project Structure
@@ -32,18 +32,15 @@ projects/social-media-automation-hub/
 ```
 
 ## Setup
-1. Open `src/social_media_hub.html` in any browser.
-2. Navigate between Setup Guide, Brand & Bios, Phases & Tasks, Go-Live, and n8n Connections.
+1. Open `src/social_media_hub.html` in browser.
 
 ## Example
 ```javascript
-const STEP_TOT = 177, PHASE_TOT = 29, GL_TOT = 16;
+const STEP_TOT = 177;
 ```
 
 ## Security & Privacy
-All internal credentials, names, phone numbers, and domains are anonymized.
+All internal credentials anonymized.
 
 ## Skills Demonstrated
-- Single-Page Application (SPA) Design
-- Enterprise Platform Governance & Technical Documentation
-- Interactive State Management
+- Enterprise Governance & Web UI

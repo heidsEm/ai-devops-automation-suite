@@ -11,15 +11,15 @@ Builds a browser-native HTML5 Canvas and Web Audio compositing studio with inter
 
 ## Tech Stack
 - HTML5 Canvas API
-- Web Audio API (OfflineAudioContext waveform decoding)
+- Web Audio API
 - HTML5 MediaRecorder API
-- JavaScript ES6 Module Architecture
+- JavaScript ES6 Modules
 
 ## Architecture / Workflow
 Load Video -> Auto-Decode Waveform & Speech Bursts -> Position Text & B-roll Overlay Clips -> Real-time Canvas Compositing -> MediaRecorder MP4/WebM Render.
 
 ## Key Features
-- Real-time HTML5 Canvas text styling (titles, stats, quotes with drop shadows)
+- Real-time HTML5 Canvas text styling
 - OfflineAudioContext speech energy detection for automatic subtitle alignment
 - Interactive multi-track timeline with drag-to-trim handles
 - In-browser 1080p video rendering & instant file download
@@ -33,9 +33,8 @@ projects/video-overlay-studio/
 ```
 
 ## Setup
-1. Open `src/video_overlay_studio.html` in Chrome or Edge.
-2. Click 'Load video' to load your base video track.
-3. Add Text/B-roll overlays, auto-time using audio waveform, and click 'Render & download'.
+1. Open `src/video_overlay_studio.html` in Chrome/Edge.
+2. Load video and add overlays.
 
 ## Example
 ```javascript
@@ -43,9 +42,7 @@ const CANVAS_W = 1920, CANVAS_H = 1080;
 ```
 
 ## Security & Privacy
-All processing occurs 100% client-side in browser memory. No media or text data leaves your machine.
+100% client-side execution.
 
 ## Skills Demonstrated
-- Advanced HTML5 Canvas & Web Audio Engineering
-- Custom Non-Linear Timeline UI Engineering
-- Hardware-Accelerated Browser Video Encoding
+- HTML5 Canvas & Web Audio Engineering
