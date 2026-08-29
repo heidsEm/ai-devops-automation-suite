@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Time Converter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-page: linear-gradient(160deg, #EFF6FF 0%, #DBEAFE 40%, #EFF6FF 100%);
+    --bg-card: #FFFFFF;
+    --bg-card-border: #DBEAFE;
+    --bg-input: #EFF6FF;
+    --bg-dropdown: #FFFFFF;
+    --bg-diff-row: #EFF6FF;
+    --bg-diff-border: #DBEAFE;
+    --bg-home-card: linear-gradient(135deg,#EFF6FF 0%,#DBEAFE 100%);
+    --bg-settings-btn: #FFFFFF;
+    --bg-modal: #FFFFFF;
+    --bg-modal-border: #DBEAFE;
+    --bg-home-option: #EFF6FF;
+    --bg-offset-badge: #EFF6FF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --text-city: #1E293B;
+    --text-time: #1D4ED8;
+    --text-diff-cities: #475569;
+    --btn-cancel-bg: #FFFFFF;
+    --btn-cancel-text: #475569;
+    --btn-cancel-border: #E2E8F0;
+    --modal-close-bg: #F1F5F9;
+    --modal-close-text: #64748B;
+    --remove-btn-color: #CBD5E1;
+    --shadow-sm: 0 1px 3px rgba(37,99,235,0.08);
+    --shadow-md: 0 4px 16px rgba(37,99,235,0.10), 0 2px 6px rgba(37,99,235,0.06);
+    --shadow-lg: 0 8px 32px rgba(37,99,235,0.14), 0 4px 12px rgba(37,99,235,0.08);
+  }
+
+  body.dark {
+    --bg-page: linear-gradient(160deg,#0f172a 0%,#0c1a3a 40%,#0f172a 100%);
+    --bg-card: #1a2744;
+    --bg-card-border: #1e3a6e;
+    --bg-input: #0f1f3d;
+    --bg-dropdown: #1a2744;
+    --bg-diff-row: #0f1f3d;
+    --bg-diff-border: #1e3a6e;
+    --bg-home-card: linear-gradient(135deg,#1e3a6e 0%,#1a2f5e 100%);
+    --bg-settings-btn: #1a2744;
+    --bg-modal: #1a2744;
+    --bg-modal-border: #1e3a6e;
+    --bg-home-option: #0f1f3d;
+    --bg-offset-badge: #0f1f3d;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-city: #f1f5f9;
+    --text-time: #60A5FA;
+    --text-diff-cities: #94a3b8;
+    --btn-cancel-bg: #1a2744;
+    --btn-cancel-text: #94a3b8;
+    --btn-cancel-border: #1e3a6e;
+    --modal-close-bg: #0f1f3d;
+    --modal-close-text: #94a3b8;
+    --remove-btn-color: #334155;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-page);
+    min-height: 100vh;
+    color: var(--text-primary);
+    padding: 2rem 1rem;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .app-wrapper { max-width: 900px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 2.5rem; position: relative; }
+  .header-btns { position: absolute; top: 0; right: 0; display: flex; gap: 8px; }
+  .btn-icon { width: 40px; height: 40px; background: var(--bg-settings-btn); border: 1.5px solid var(--bg-card-border); border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #3B82F6; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+  .btn-icon:hover { background: var(--bg-input); border-color: #60A5FA; color: #1D4ED8; }
+  .btn-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  #btn-settings:hover { transform: rotate(30deg); }
+  .logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 0.5rem; }
+  .logo-icon { width: 48px; height: 48px; background: #2563EB; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); }
+  .logo-icon svg { width: 28px; height: 28px; fill: none; stroke: white; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  h1 { font-size: 2rem; font-weight: 600; color: #1E40AF; letter-spacing: -0.03em; }
+  body.dark h1 { color: #93C5FD; }
+  .subtitle { font-size: 0.95rem; color: #3B82F6; font-weight: 400; }
+  body.dark .subtitle { color: #60A5FA; }
+  .live-utc { display: inline-flex; align-items: center; gap: 8px; background: #2563EB; color: white; font-family: 'DM Mono', monospace; font-size: 0.82rem; padding: 5px 14px; border-radius: 100px; margin-top: 0.75rem; letter-spacing: 0.03em; }
+  .pulse-dot { width: 7px; height: 7px; background: #6EE7B7; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+  .card { background: var(--bg-card); border-radius: 20px; box-shadow: var(--shadow-md); padding: 1.5rem; margin-bottom: 1.25rem; border: 1px solid var(--bg-card-border); transition: background 0.3s, border-color 0.3s; }
+  .section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #60A5FA; margin-bottom: 0.75rem; }
+  .search-row { display: flex; gap: 10px; align-items: stretch; }
+  .search-wrap { position: relative; flex: 1; }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #60A5FA; pointer-events: none; }
+  .search-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  input[type="text"] { width: 100%; padding: 12px 12px 12px 42px; border: 1.5px solid var(--bg-card-border); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text-primary); background: var(--bg-input); outline: none; transition: border-color 0.15s, box-shadow 0.15s, background 0.3s; }
+  input[type="text"]:focus { border-color: #3B82F6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); background: var(--bg-card); }
+  input[type="text"]::placeholder { color: var(--text-secondary); }
+  .btn-add { padding: 12px 22px; background: #2563EB; color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.15s, transform 0.1s; white-space: nowrap; }
+  .btn-add:hover { background: #1D4ED8; }
+  .btn-add:active { transform: scale(0.97); }
+  .dropdown-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: var(--bg-dropdown); border: 1.5px solid var(--bg-card-border); border-radius: 14px; box-shadow: var(--shadow-lg); max-height: 240px; overflow-y: auto; z-index: 1000; display: none; }
+  .dropdown-list.open { display: block; }
+  .dropdown-item { padding: 10px 16px; cursor: pointer; font-size: 0.9rem; color: var(--text-primary); transition: background 0.1s; display: flex; align-items: center; gap: 10px; }
+  .dropdown-item:hover { background: var(--bg-input); color: #60A5FA; }
+  .flag { font-size: 1.1rem; }
+  .city-name { font-weight: 500; }
+  .tz-tag { font-size: 0.78rem; color: #60A5FA; font-family: 'DM Mono', monospace; margin-left: auto; }
+  .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+  .city-card { background: var(--bg-card); border: 1.5px solid var(--bg-card-border); border-radius: 18px; padding: 1.25rem 1.25rem 1rem; position: relative; transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s, background 0.3s; animation: cardIn 0.3s ease; }
+  .city-card.home { border-color: #60A5FA; background: var(--bg-home-card); }
+  .home-badge { position: absolute; top: 10px; right: 38px; background: #2563EB; color: white; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 100px; }
+  .remove-btn { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; background: none; border: none; cursor: pointer; color: var(--remove-btn-color); border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: color 0.15s, background 0.15s; padding: 0; }
+  .remove-btn:hover { color: #EF4444; background: rgba(239,68,68,0.12); }
+  .card-flag { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+  .card-city { font-size: 1rem; font-weight: 600; color: var(--text-city); margin-bottom: 1px; }
+  .card-country { font-size: 0.78rem; color: #60A5FA; margin-bottom: 0.75rem; }
+  .card-time { font-family: 'DM Mono', monospace; font-size: 1.75rem; font-weight: 500; color: var(--text-time); letter-spacing: -0.02em; line-height: 1; }
+  .card-date { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+  .card-offset { display: inline-block; margin-top: 8px; font-size: 0.75rem; font-family: 'DM Mono', monospace; background: var(--bg-offset-badge); color: #3B82F6; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--bg-card-border); }
+  .diff-section { display: none; }
+  .diff-section.visible { display: block; }
+  .diff-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .diff-grid { display: grid; gap: 8px; }
+  .diff-row { display: grid; grid-template-columns: 1fr 1fr 80px; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg-diff-row); border-radius: 10px; border: 1px solid var(--bg-diff-border); font-size: 0.88rem; transition: background 0.3s; }
+  .diff-cities { color: var(--text-diff-cities); font-weight: 500; }
+  .diff-arrow { color: #60A5FA; text-align: center; font-size: 1.1rem; }
+  .diff-val { font-family: 'DM Mono', monospace; font-size: 0.88rem; text-anchor: right; font-weight: 500; }
+  .converter-wrap { display: flex; flex-direction: column; gap: 4px; }
+  .conv-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .conv-city-wrap { position: relative; flex: 1; min-width: 180px; }
+  input[type="time"], input[type="date"] { padding: 10px 12px; border: 1.5px solid var(--bg-card-border); border-radius: 12px; font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text-primary); background: var(--bg-input); outline: none; cursor: pointer; transition: border-color 0.15s, background 0.3s; color-scheme: light; }
+  body.dark input[type="time"], body.dark input[type="date"] { color-scheme: dark; }
+  .btn-now { padding: 8px 16px; background: var(--bg-settings-btn); color: #2563EB; border: 1.5px solid var(--bg-card-border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+</style>
+</head>
+<body>
+<div class="app-wrapper">
+  <header>
+    <div class="header-btns">
+      <button class="btn-icon" id="btn-darkmode" title="Toggle dark mode"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+    </div>
+    <div class="logo-row">
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/><path d="M3.5 7h17M3.5 17h17"/></svg></div>
+      <h1>World Time Converter</h1>
+    </div>
+    <p class="subtitle">Compare time across cities around the world in real time</p>
+    <div class="live-utc"><div class="pulse-dot"></div><span id="utc-clock">UTC 00:00:00</span></div>
+  </header>
+  <div class="card">
+    <div class="section-label">Add a city</div>
+    <div class="search-row">
+      <div class="search-wrap" id="search-wrap">
+        <input type="text" id="search-input" placeholder="Search city — e.g. Tokyo, Sydney, London, New York…" autocomplete="off">
+        <div class="dropdown-list" id="dropdown"></div>
+      </div>
+      <button class="btn-add" id="btn-add">+ Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="section-label">Your cities</div>
+    <div class="cities-grid" id="cities-grid"></div>
+  </div>
+</div>
+</body>
+</html>

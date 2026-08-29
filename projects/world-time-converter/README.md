@@ -45,5 +45,6 @@ const fmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'Asia/Tokyo', hour: '2-
 100% client-side execution. No user search data or location info is transmitted to external servers.
 
 ## Skills Demonstrated
-- Native JavaScript Internationalization API
+- Native JavaScript Internationalization API (`Intl.DateTimeFormat`)
 - Responsive CSS Grid & Dynamic Theme State Management
+- High-Performance Live DOM Updates
