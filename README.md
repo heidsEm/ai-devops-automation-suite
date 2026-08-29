@@ -8,7 +8,7 @@ An enterprise-grade portfolio of **AI Orchestration Pipelines**, **Media Automat
 
 I build and support production systems — making complex API, cloud, and AI automation workflows easier to operate. 
 
-This repository consolidates **12 production-ready projects** demonstrating end-to-end capabilities across AI workflow engineering, web app development, API gateway management, PKI security, and CI/CD repository governance.
+This repository consolidates **14 production-ready projects** demonstrating end-to-end capabilities across AI workflow engineering, web app development, API gateway management, PKI security, and CI/CD repository governance.
 
 ---
 
@@ -28,6 +28,8 @@ This repository consolidates **12 production-ready projects** demonstrating end-
 | **10** | [`projects/azure-apim-ops-suite`](projects/azure-apim-ops-suite) | API Management | Python, Azure APIM REST, Azure DevOps, Graphviz | Azure APIM classification, ADO secret sync & Diagrams-as-Code |
 | **11** | [`projects/devops-utilities-toolkit`](projects/devops-utilities-toolkit) | Security & PKI | Python, OpenSSL, ElementTree XML, Matplotlib | X.509 cert converters (`.cer`/`.pem`/`.pfx`), policy XML tools & traffic analytics |
 | **12** | [`projects/github-automation-suite`](projects/github-automation-suite) | CI/CD Governance | Python, GitHub REST API, GitHub Actions | Repository branch protection, CODEOWNERS, & reusable CI/CD workflows |
+| **13** | [`projects/world-time-converter`](projects/world-time-converter) | Operations Utility | HTML5, CSS3, JavaScript ES6+, Intl API | Real-time global timezone converter & time difference matrix |
+| **14** | [`projects/script-ost-splitter`](projects/script-ost-splitter) | Media / Production | JavaScript ES6+, RegEx AST, CSV/SRT Exporter | Script parser splitting spoken narration from On-Screen Text (OST) cues |
 
 ---
 
